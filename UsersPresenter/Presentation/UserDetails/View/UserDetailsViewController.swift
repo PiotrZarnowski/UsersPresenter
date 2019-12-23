@@ -82,6 +82,7 @@ class UserDetailsViewController: UIViewController {
     }
 
     private func setupView() {
+        title = "User"
         self.view.fillWith(view: baseScrollView)
         baseScrollView.fillWith(view: internalView)
         internalView.fillWith(view: baseStack, padding: 20)
