@@ -73,6 +73,11 @@ class UserSourceLabelView: UIView {
             setupShadow()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupShadow()
+    }
+    
     private func addLabel() {
         addSubview(nameLabel)
              nameLabel.translatesAutoresizingMaskIntoConstraints = false

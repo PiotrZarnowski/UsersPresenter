@@ -37,29 +37,6 @@ class UsersListViewController: UIViewController {
         viewModel.viewDidLoad()
     }
     
-    private func setupView() {
-        view.backgroundColor = .white
-        title = "Users"
-        mainTableView = UITableView(frame: .zero, style: UITableView.Style.plain)
-        view.fillWith(view: mainTableView)
-        loadingView = UIActivityIndicatorView()
-        loadingView.hidesWhenStopped = true
-        view.placeInCenter(view: loadingView)
-    }
-    
-    private func setupTableView() {
-        mainTableView.register(cellType: UserTableViewCell.self, reuseIdentifier: UserTableViewCell.description())
-        usersListDataSource = GenericTableViewDataSource<UserTableViewCell>()
-        mainTableView.dataSource = usersListDataSource
-        mainTableView.delegate = self
-        mainTableView.estimatedRowHeight = 100
-        mainTableView.rowHeight = UITableView.automaticDimension
-        mainTableView.separatorStyle = .none
-        refreshControlView = UIRefreshControl()
-        refreshControlView?.addTarget(self, action: #selector(userRefresh), for: UIControl.Event.valueChanged)
-        mainTableView.refreshControl = refreshControlView
-    }
-
     func bind(to viewModel: UsersListViewModel) {
         viewModel.route.observe(on: self) { [weak self] in self?.handle($0) }
         viewModel.items.observe(on: self) { [weak self] in self?.items = $0 }
@@ -77,11 +54,10 @@ class UsersListViewController: UIViewController {
         }
     }
     
-
     private func updateLoadingState() {
         switch viewModel.loadingType.value {
         case .none:
-            loadingView.isHidden = true
+            loadingView.stopAnimating()
             mainTableView.refreshControl?.endRefreshing()
         case .fullScreen:
             loadingView.startAnimating()
@@ -89,20 +65,51 @@ class UsersListViewController: UIViewController {
         }
     }
     
-   @objc private func userRefresh() {
-        viewModel.didRefresh()
+    @objc private func userRefresh() {
+         viewModel.didRefresh()
+     }
+     
+     func reload() {
+         usersListDataSource?.models = items
+         mainTableView.reloadData()
+     }
+    
+    private func setupView() {
+        view.backgroundColor = .white
+        title = "Users"
+        mainTableView = UITableView(frame: .zero, style: UITableView.Style.plain)
+        view.fillWith(view: mainTableView)
+        setupLoadingView()
     }
     
-    func reload() {
-        usersListDataSource?.models = items
-        mainTableView.reloadData()
+    private func setupTableView() {
+        mainTableView.register(cellType: UserTableViewCell.self, reuseIdentifier: UserTableViewCell.description())
+        usersListDataSource = GenericTableViewDataSource<UserTableViewCell>()
+        mainTableView.dataSource = usersListDataSource
+        mainTableView.delegate = self
+        mainTableView.estimatedRowHeight = 100
+        mainTableView.rowHeight = UITableView.automaticDimension
+        mainTableView.separatorStyle = .none
+        refreshControlView = UIRefreshControl()
+        refreshControlView?.addTarget(self, action: #selector(userRefresh), for: UIControl.Event.valueChanged)
+        mainTableView.refreshControl = refreshControlView
+    }
+    
+    private func setupLoadingView() {
+        if #available(iOS 13.0, *) {
+            loadingView = UIActivityIndicatorView()
+        } else {
+            loadingView = UIActivityIndicatorView(style: .gray)
+        }
+        view.placeInCenter(view: loadingView)
+        loadingView.hidesWhenStopped = true
     }
 
 }
 
 extension UsersListViewController: Alertable {
     func showError(_ error: String) {
-          // guard !error.isEmpty else { return }
+           guard !error.isEmpty else { return }
            showAlert(title: NSLocalizedString("Error", comment: ""), message: error)
        }
 }

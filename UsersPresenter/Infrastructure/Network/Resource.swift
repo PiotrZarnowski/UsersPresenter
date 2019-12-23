@@ -8,17 +8,6 @@
 
 import Foundation
 
-//protocol APIGeneric {}
-//
-//protocol GenericResource {
-//    associatedtype T
-//    typealias ParseMethod = ((Data) throws -> T)
-//
-//    var url: URL { get }
-//    var parseMethod: ParseMethod { get }
-//    var exceptedStatus: Int { get }
-//}
-
 struct Resource<T> {
     
     typealias ParseMethod = ((Data) throws -> T)

@@ -27,25 +27,9 @@ extension UserTableViewCell: ConfigurableCell {
         nameLabel.text = viewModel.name
         userSourceLabelView.name = viewModel.sourceName
         userSourceLabelView.backgroundColor = UserSourceColor(rawValue: viewModel.sourceColorId)?.color() ?? .clear
-     //   sourceLabelParentView.backgroundColor = UserSourceColor(rawValue: viewModel.sourceColorId)?.color() ?? .clear
-     //   sourceLabel.text = viewModel.sourceName
         guard let imageURL = URL(string: viewModel.avatarPath) else {avatarImageView.imageView.image = UIImage()
             return
         }
         avatarImageView.imageView.kf.setImage(with: imageURL)
-    }
-}
-
-enum UserSourceColor: Int {
-    case blue = 1
-    case green
-    
-    func color() -> UIColor {
-        switch self {
-        case .blue:
-            return .systemBlue
-        case .green:
-            return .systemGreen
-        }
     }
 }
