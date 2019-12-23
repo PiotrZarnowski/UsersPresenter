@@ -14,13 +14,13 @@ extension User {
     init(gitHubUser: GitHubUser) {
         name = gitHubUser.name
         imagePath = gitHubUser.avatarUrl
-        source = UserSource(name: "Git Hub", colorId: 1)
+        source = UserSource(name: "GitHub", colorId: 1)
     }
     
     init(dailyMotionUser: DailyMotionUser) {
         name = dailyMotionUser.name
         imagePath = dailyMotionUser.avatarUrl
-        source = UserSource(name: "Daily Motion", colorId: 2)
+        source = UserSource(name: "Dailymotion", colorId: 2)
     }
     
     

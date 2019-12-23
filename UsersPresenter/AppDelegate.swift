@@ -17,9 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
                 
                 window = UIWindow(frame: UIScreen.main.bounds)
-                let fetchUsersUseCase = DefaultFetchUsersUseCase(usersRepository: DefaultUsersRepository(dataTransferService: WebService()))
-                let rootViewController = UsersListTableViewController()
-                rootViewController.viewModel = DefaultUsersListViewModel(fetchUsersUseCase: fetchUsersUseCase)
+                let dIContainer = AppDIContainer()
+                let rootViewController = dIContainer.makeUsersListViewController()
                 let nc = UINavigationController(rootViewController: rootViewController)
                 if #available(iOS 11.0, *) {
                     nc.navigationBar.prefersLargeTitles = true

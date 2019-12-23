@@ -47,23 +47,23 @@ class DefaultUsersRepository: UsersRepository {
         var gitHubUsersResult: Result<[GitHubUser], Error>?
         var dailyMotionUsersResult: Result<DailyMotionUsersPage, Error>?
               
-              let fetchGitHubUsersItem = DispatchWorkItem { [weak self] in
+              let fetchGitHubUsersItem = DispatchWorkItem { //[weak self] in
                 usersFetchGroup.enter()
-                guard let self = self else {
-                    usersFetchGroup.leave()
-                    return
-                }
+//                guard let self = self else {
+//                    usersFetchGroup.leave()
+//                    return
+//                }
                 self.dataTransferService.getResource(GitHubUsersResource.getResource()) {  result in
                     gitHubUsersResult = result
                     usersFetchGroup.leave()
                   }
               }
               
-              let fetchDailyMotionUsersItem = DispatchWorkItem { [weak self] in
+              let fetchDailyMotionUsersItem = DispatchWorkItem { //[weak self] in
                 usersFetchGroup.enter()
-                guard let self = self else {
-                    usersFetchGroup.leave()
-                    return }
+//                guard let self = self else {
+//                    usersFetchGroup.leave()
+//                    return }
                 self.dataTransferService.getResource(DailyMotionUsersPageResource.getResource()) { result in
                       dailyMotionUsersResult = result
                       usersFetchGroup.leave()
